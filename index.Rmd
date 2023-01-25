@@ -1,6 +1,7 @@
 ---
-title: "Jacob A. Sorrentino Bio381 Webpage"
+title: "index"
 author: "Jacob A. Sorrentino"
 date: "2023-01-25"
 output: html_document
 ---
+# Jacob A. Sorrentino Bio381 Primary Webpage
