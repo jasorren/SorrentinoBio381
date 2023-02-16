@@ -1,0 +1,51 @@
+---
+title: "Homework 5"
+author: "Jacob A. Sorrentino"
+date: "2023-02-16"
+output: html_document
+---
+
+```
+# Question 1
+n_dims <- sample(size=1,x=3:10) # random integer between 1 and 10
+n_dims_vec <- seq(from=1,to=(n_dims)^2) # sequence of integers from 1 to the square of n_dims
+shuf_vec <- sample(x=n_dims_vec,size=length(n_dims_vec),replace=FALSE) # vector of n_dims_vec values sampled randomly to reorder them
+m <- matrix(data=shuf_vec,nrow=sqrt(length(shuf_vec))) # square matrix of the values in shuf_vec
+print(m)
+m <- t(m) # transpose matrix m
+print(m)
+sum(m[1,]) # sum of first row of m
+mean(m[1,]) # mean of first row of m
+sum(m[sqrt(length(shuf_vec)),]) # sum of last row of m
+mean(m[sqrt(length(shuf_vec)),]) # mean of last row of m
+m <- eigen(m) # calculate eigenvalues and eigenvectors of m
+typeof(m$values) # data type of m$values is "complex"
+typeof(m$vectors) # data type of m$vectors is "complex"
+
+# Question 2
+my_matrix <- matrix(data=runif(n=16),nrow=4) # square matrix of 16 random numbers
+my_logical <- seq(1:100) # vector of integers 1 to 100
+my_logical <- my_logical<50 # vector now displays whether or not the previous values were or were not less than 50
+my_letters <- letters # vector of the lowercase alphabet
+my_letters <- sample(x=letters,size=26,replace=FALSE) # random reordering of the previous vector values
+my_list <- list(my_matrix,my_logical,my_letters) # list containing the previous matrix and two vectors
+new_list <- list(my_matrix[2,2],my_logical[2],my_letters[2]) # new list with the 2nd row 2nd column value from the matrix, the 2nd position value from the first vector, and the 2nd position value from the second vector
+typeof(new_list[[1]]) # data type of first list element is "double"
+typeof(new_list[[2]]) # data type of second list element is "logical"
+typeof(new_list[[3]]) # data type of third list element is "character"
+new_vector <- c(new_list[[1]],new_list[[2]],new_list[[3]]) # concatenated vector made from the elements of the list
+typeof(new_vector) # data type of this vector is "character"
+
+# Question 3
+my_unis <- runif(n=26,min=0,max=10) # 26 random values between 0 and 10
+my_letters <- LETTERS # vector of the uppercase alphabet
+my_letters <- sample(size=26,x=my_letters) # random reordering of my_letters
+dFrame <- data.frame(my_unis,my_letters) # data frame composed of the previous two vectors
+dFrame[sample(size=4,x=1:26),1] <- NA # replacement of four randomly sampled values from the first column of the data frame with the value NA
+which(!complete.cases(dFrame)) # identification of which rows don't have no missing values
+print(dFrame)
+dFrame[order(dFrame$my_letters),] # ordering of the data frame based on the element my_letters
+print(dFrame)
+mean(dFrame[which(complete.cases(dFrame)),1]) # mean value of non-missing value elements of the first column of the data frame
+
+```
