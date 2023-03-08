@@ -1,0 +1,149 @@
+---
+title: "Homework 7"
+author: "Jacob A. Sorrentino"
+date: "2023-03-08"
+output: html_document
+---
+
+#
+#### Open libraries
+```{R}
+library(ggplot2) # for graphics
+library(MASS) # for maximum likelihood estimation
+```
+
+#
+#### Read in "fake" data vector
+```{R}
+# quick and dirty, a truncated normal distribution to work on the solution set
+
+# z <- rnorm(n=3000,mean=0.2)
+# z <- data.frame(1:3000,z)
+# names(z) <- list("ID","myVar")
+# z <- z[z$myVar>0,]
+# str(z)
+# summary(z$myVar)
+```
+
+#
+#### Read in "real" data vector
+```{R}
+z <- read.table("modified_slug_data.csv",header=TRUE,sep=",")
+z <- z[z$number_of_slugs>0,]
+str(z)
+summary(z)
+```
+
+#
+#### Plot histogram of data
+```{R}
+p1 <- ggplot(data=z, aes(x=number_of_slugs, y=after_stat(density))) +
+  geom_histogram(color="grey60",fill="cornsilk",linewidth=0.2) 
+print(p1)
+```
+
+#
+#### Add empirical density curve
+```{R}
+p1 <-  p1 +  geom_density(linetype="dotted",linewidth=0.75)
+print(p1)
+```
+
+#
+#### Get maximum likelihood parameters for normal
+```{R}
+normPars <- fitdistr(z$number_of_slugs,"normal")
+print(normPars)
+str(normPars)
+normPars$estimate["mean"] # note structure of getting a named attribute
+```
+
+#
+#### Plot normal probability density
+```{R}
+meanML <- normPars$estimate["mean"]
+sdML <- normPars$estimate["sd"]
+
+xval <- seq(0,max(z$number_of_slugs),len=length(z$number_of_slugs))
+
+ stat <- stat_function(aes(x = xval, y = after_stat(y)), fun = dnorm, colour="red", n = length(z$number_of_slugs), args = list(mean = meanML, sd = sdML))
+ p1 + stat
+```
+
+#
+#### Plot exponential probability density
+```{R}
+expoPars <- fitdistr(z$number_of_slugs,"exponential")
+rateML <- expoPars$estimate["rate"]
+
+stat2 <- stat_function(aes(x = xval, y = ..y..), fun = dexp, colour="blue", n = length(z$number_of_slugs), args = list(rate=rateML))
+ p1 + stat + stat2
+```
+
+#
+#### Plot uniform probability density
+```{R}
+stat3 <- stat_function(aes(x = xval, y = ..y..), fun = dunif, colour="darkgreen", n = length(z$number_of_slugs), args = list(min=min(z$number_of_slugs), max=max(z$number_of_slugs)))
+ p1 + stat + stat2 + stat3
+```
+
+#
+#### Plot gamma probability density
+```{R}
+gammaPars <- fitdistr(z$number_of_slugs,"gamma")
+shapeML <- gammaPars$estimate["shape"]
+rateML <- gammaPars$estimate["rate"]
+
+stat4 <- stat_function(aes(x = xval, y = ..y..), fun = dgamma, colour="brown", n = length(z$number_of_slugs), args = list(shape=shapeML, rate=rateML))
+ p1 + stat + stat2 + stat3 + stat4
+```
+
+#
+#### Plot beta probability density
+```{R}
+pSpecial <- ggplot(data=z, aes(x=number_of_slugs/(max(number_of_slugs + 0.1)), y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2) + 
+  xlim(c(0,1)) +
+  geom_density(size=0.75,linetype="dotted")
+
+betaPars <- fitdistr(x=z$number_of_slugs/max(z$number_of_slugs + 0.1),start=list(shape1=1,shape2=2),"beta")
+shape1ML <- betaPars$estimate["shape1"]
+shape2ML <- betaPars$estimate["shape2"]
+
+statSpecial <- stat_function(aes(x = xval, y = ..y..), fun = dbeta, colour="orchid", n = length(z$number_of_slugs), args = list(shape1=shape1ML,shape2=shape2ML))
+pSpecial + statSpecial
+```
+
+#
+#### Find best-fitting distribution
+I find the gamma distribution to fit my data best.
+
+#
+#### Simulated data
+```{R}
+simulateData <- rgamma(n=158,rate=0.08138869,shape=0.800539)
+
+simulateData <- data.frame(1:158,simulateData)
+names(simulateData) <- list("ID","number_of_slugs")
+z <- z[z$myVar>0,]
+
+simulatePlot <- ggplot(data=simulateData, aes(x=number_of_slugs, y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2)
+simulatePlot <-  simulatePlot +  geom_density(linetype="dotted",size=0.75)
+```
+
+#
+#### Simulated data
+```{R}
+print(simulatePlot)
+```
+
+#
+#### Original data
+```{R}
+print(p1)
+```
+
+#
+#### Histogram profile comparison
+I think the model is doing a decent job of simulating realistic data based on the original measurements. The probability density curves follow a similar path, including the short rise-and-drop ~x=5 and the presence of a few high outliers. 

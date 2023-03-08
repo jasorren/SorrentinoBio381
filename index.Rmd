@@ -12,3 +12,5 @@ Homework 4 [here](homework4.html)
 Homework 5 [here](homework5.html)
 
 Homework 6 [here](homework6.html)
+
+Homework 7 [here](homework7.html)
