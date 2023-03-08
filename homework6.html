@@ -11,9 +11,9 @@
 
 <meta name="author" content="Jacob A. Sorrentino" />
 
-<meta name="date" content="2023-01-25" />
+<meta name="date" content="2023-03-08" />
 
-<title>Bio381 Primary Webpage</title>
+<title>Homework 6</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -350,17 +350,58 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Bio381 Primary Webpage</h1>
+<h1 class="title toc-ignore">Homework 6</h1>
 <h4 class="author">Jacob A. Sorrentino</h4>
-<h4 class="date">2023-01-25</h4>
+<h4 class="date">2023-03-08</h4>
 
 </div>
 
 
-<p>Homework 3 <a href="homework3.html">here</a></p>
-<p>Homework 4 <a href="homework4.html">here</a></p>
-<p>Homework 5 <a href="homework5.html">here</a></p>
-<p>Homework 6 <a href="homework6.html">here</a></p>
+<pre><code>library(dplyr)
+library(tidyverse)
+data(iris)
+
+# Question 1
+# 150 observations, 5 variables
+
+# Question 2
+iris1 &lt;- filter(iris,!Species==&quot;setosa&quot;,Sepal.Length&gt;6,Sepal.Width&gt;2.5)
+# 56 observations, 5 variables
+
+# Question 3
+iris2 &lt;- select(iris1,Species,Sepal.Length,Sepal.Width)
+# 56 observations, 3 variables
+
+# Question 4
+iris3 &lt;- arrange(iris2,by=desc(Sepal.Length))
+head(iris3)
+
+# Question 5
+iris4 &lt;- mutate(iris3,Sepal.Area=Sepal.Length*Sepal.Width)
+# 56 observations, 4 variables
+
+# Question 6
+iris5 &lt;- summarize(iris4,Average.Sepal.Length=mean(Sepal.Length),Average.Sepal.Width=mean(Sepal.Width),Sample.Size=n())
+print(iris5)
+
+# Question 7
+iris4Species &lt;- group_by(iris4,Species)
+iris6 &lt;- summarize(iris4Species,Average.Sepal.Length=mean(Sepal.Length),Average.Sepal.Width=mean(Sepal.Width),Sample.Size=n())
+print(iris6)
+
+# Question 8
+irisFinal &lt;- iris %&gt;%
+  filter(!Species==&quot;setosa&quot;,Sepal.Length&gt;6,Sepal.Width&gt;2.5) %&gt;%
+  select(Species,Sepal.Length,Sepal.Width) %&gt;%
+  arrange(by=desc(Sepal.Length)) %&gt;%
+  mutate(Sepal.Area=Sepal.Length*Sepal.Width) %&gt;%
+  group_by(Species) %&gt;%
+  summarize(Average.Sepal.Length=mean(Sepal.Length),Average.Sepal.Width=mean(Sepal.Width),Sample.Size=n())
+
+# Question 9
+irisLonger &lt;- iris %&gt;%
+  pivot_longer(cols=Sepal.Length:Sepal.Width:Petal.Length:Petal.Width,names_to=&quot;Measure&quot;,values_to=&quot;Value&quot;)
+</code></pre>
 
 
 

@@ -10,8 +10,8 @@ sum(m[1,])
 mean(m[1,])
 sum(m[sqrt(length(shuf_vec)),])
 m <- eigen(m)
-typeof(m$values)
-typeof(m$vectors)
+typeof(m$values) # data type of m$values is "complex"
+typeof(m$vectors) # data type of m$vectors is "complex"
 
 # Question 2
 my_matrix <- matrix(data=runif(n=16),nrow=4)
