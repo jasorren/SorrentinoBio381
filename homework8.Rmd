@@ -1,0 +1,58 @@
+---
+title: "Homework 8"
+author: "Jacob A. Sorrentino"
+date: "2023-03-22"
+output: html_document
+---
+
+
+#### Question 1
+**Hypothesis**: The presence of spotted lanternfly increases food resource availability for land slugs.
+
+**Prediction**: Areas in which spotted lanternfly are present will host larger land slug populations than areas without spotted lanternfly. 
+
+**Design**: Treatment 1 is an area without spotted lanternfly, treatment 2 is an area with spotted lanternfly. 
+
+**Data**: Pitfall traps were set up in each treatment to collect land slugs, with each data point being a number of land slugs collected from a trap. 
+
+
+#### Questions 2-4
+The sample sizes, means, and variances of the data were determined based on real data I collected during the summer of 2021 in eastern Pennsylvania. A total of 150 traps per treatment is somewhat optimistic but reasonable based on what I was able to achieve, and the means (2 and 10) and variances (1 and 15) in the number of slugs found are rounded-to-the-nearest-whole-number versions of my actual data.
+
+
+**Creation of useable dataframe** - 
+
+This includes the generation of two normal datasets using the aformentioned parameters, the transformation of these two datasets into two dataframes with useable columns, the combining of these two source dataframes into a final stacked dataframe, and finally the coercion of the final dataframe into the'factor' data type to be useable for further analysis.
+```{R}
+treatment1Data <- round(abs(rnorm(n=150,mean=2,sd=1)))
+treatment2Data <- round(abs(rnorm(n=150,mean=10,sd=15)))
+treatment1Dataframe <- data.frame(1:150,treatment1Data)
+names(treatment1Dataframe) <- list("Treatment","number_of_slugs")
+treatment1Dataframe["Treatment"][treatment1Dataframe["Treatment"] >= 1] <- "treatment_1"
+treatment2Dataframe <- data.frame(1:150,treatment2Data)
+names(treatment2Dataframe) <- list("Treatment","number_of_slugs")
+treatment2Dataframe["Treatment"][treatment2Dataframe["Treatment"] >= 1] <- "treatment_2"
+fullDataframe <- rbind(treatment1Dataframe,treatment2Dataframe)
+fullDataframe$Treatment <- as.factor(fullDataframe$Treatment)
+```
+
+
+**Statistical test and plotting** - 
+
+Here, a t-test is performed to find statistical differentiaton between the two treatments, and a box plot is made to visualize the data.
+```{R}
+t_test <- t.test(fullDataframe$number_of_slugs~fullDataframe$Treatment)
+t_test
+library(ggplot2)
+plot1 <- ggplot(fullDataframe,aes(x=Treatment,y=number_of_slugs))+geom_boxplot()
+print(plot1)
+```
+
+
+#### Question 6
+With my original sample size (150) and data variances (1 and 15), I was able to get a statistically significant p-value all the way down to an equivalent mean of 2 for both treatments, regardless of how many times I reran the program. This is likely due to the very large difference in data variance between the two treatments. 
+
+
+#### Question 7
+With my original means (2 and 10) and data variances (1 and 15), I was able to get (very) statistically significant p-values (in fact, the same p-value every time, <2.2e-16) all the way down to a sample size of 2, regardless of how many times I reran the program. Again, This is likely due to the very large difference in data variance between the two treatments. 
+
