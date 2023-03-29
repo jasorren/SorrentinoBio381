@@ -1,0 +1,34 @@
+# Load Packages
+library(ggplot2)
+
+# Source Functions
+source("functions/simdata_fun.R")
+source("functions/statistics_fun.R")
+source("functions/box_plot_fun.R")
+source("functions/violin_plot_fun.R")
+
+# Global Variables
+n1 <- 150
+n2 <- 150
+m1 <- 2
+m2 <- 10
+sd1 <- 1
+sd2 <- 15
+
+# Program Body
+df <- simdata(number1=n1,
+              number2=n2,
+              average1=m1,
+              average2=m2,
+              var1=sd1,
+              var2=sd2)
+
+# Statistics
+t_test <- statistics(data=df)
+t_test
+
+# Graph Results
+boxplot <- box_plot(data=df)
+print(boxplot)
+violinplot <- violin_plot(data=df)
+print(violinplot)

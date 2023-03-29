@@ -1,5 +1,5 @@
 treatment1Data <- round(abs(rnorm(n=150,mean=2,sd=1)))
-treatment2Data <- round(abs(rnorm(n=150,mean=2.19,sd=15)))
+treatment2Data <- round(abs(rnorm(n=150,mean=10,sd=15)))
 
 treatment1Dataframe <- data.frame(1:150,treatment1Data)
 names(treatment1Dataframe) <- list("Treatment","number_of_slugs")
@@ -19,4 +19,3 @@ t_test
 library(ggplot2)
 plot1 <- ggplot(fullDataframe,aes(x=Treatment,y=number_of_slugs))+geom_boxplot()
 print(plot1)
-
