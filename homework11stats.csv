@@ -1,0 +1,9 @@
+# Summary stats for batch processing of regression models
+# timestamp: 2023-04-12 14:48:22
+# NJG
+# ------------------------
+
+"ID","file_name","slope","p_val","r2"
+1,"bca_slug_data.csv",-0.0157985106382979,0.110657044953358,0.198206477983639
+2,"cn_slug_data.csv",0.000271773182013948,0.000449098749582416,0.169041879458155
+3,"sh_slug_data.csv",0.00105108480599301,7.82224934279192e-05,0.209078893999651
