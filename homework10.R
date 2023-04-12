@@ -1,0 +1,71 @@
+# Question 1
+testdata <- c(1,0,2,0,3,0,4,0,5,0,6,0,7,0,8,0,9,0)
+countzeros  <- function(vector=0) {
+  counter <- 0
+  for (i in 1:length(vector)) {
+    if (vector[i]==0) {
+      counter <- counter+1
+    }
+  }
+  print(counter)
+}
+countzeros(vector=testdata)
+
+# Question 2
+countzeros  <- function(vector=0) {
+  v <- vector[vector==0]
+  length(v)
+}
+countzeros(vector=testdata)
+
+# Question 3
+matrixer <- function(row=0,col=0) {
+  m <- matrix(nrow=row,ncol=col)
+  for (i in 1:row) {
+    for (j in 1:col) { 
+      m[i,j] <- (i*j)
+    }
+  }
+  print(m)
+}
+matrix <- matrixer(row=5,col=5)
+
+# Question 4a
+trt_group <- c(rep("Treatment 1",5),rep("Treatment 2",5),rep("Treatment 3",5))
+z <- c(runif(5) + 1, runif(5) + 10, runif(5) + 20)
+df <- data.frame(trt=trt_group,res=z)
+
+# Question 4b
+shufflemean <- function(data=0) {
+  intravec1 <- sample(data[,2],size=5,replace=FALSE)
+  mean1 <- mean(intravec1)
+  intravec2 <- sample(data[,2],size=5,replace=FALSE)
+  mean2 <- mean(intravec2)
+  intravec3 <- sample(data[,2],size=5,replace=FALSE)
+  mean3 <- mean(intravec3)
+  finalvec <- c(mean1,mean2,mean3)
+}
+meansvector <- shufflemean(data=df)
+
+# Question 4c
+m <- matrix(nrow=100,ncol=3)
+colnames(m) <- c("g1","g2","g3")
+replicate <- c(1:100)
+m <- cbind(replicate,m)
+for (i in 1:100) {
+  intravec1 <- sample(df[,2],size=5,replace=FALSE)
+  mean1 <- mean(intravec1)
+  intravec2 <- sample(df[,2],size=5,replace=FALSE)
+  mean2 <- mean(intravec2)
+  intravec3 <- sample(df[,2],size=5,replace=FALSE)
+  mean3 <- mean(intravec3)
+  finalvec <- c(mean1,mean2,mean3)
+  m[i,2:4] <- finalvec
+}
+m <- data.frame(m)
+
+# Question 4d
+library(ggplot2)
+ggplot(m, aes(x=g1)) + geom_histogram()
+ggplot(m, aes(x=g2)) + geom_histogram()
+ggplot(m, aes(x=g3)) + geom_histogram()
