@@ -35,8 +35,11 @@ for (i in seq_along(file_names)) {
   stats_out[i,3:5] <- unlist(.)
 }
 
+sh <- read.csv("homework11files/sh_slug_data.csv")
 ggplot(sh, aes(x=number_of_slugs, y=mean_slug_dry_mass)) + geom_point() + geom_smooth(method=lm)
+cn <- read.csv("homework11files/cn_slug_data.csv")
 ggplot(cn, aes(x=number_of_slugs, y=mean_slug_dry_mass)) + geom_point() + geom_smooth(method=lm)
+bca <- read.csv("homework11files/bca_slug_data.csv")
 ggplot(bca, aes(x=number_of_slugs, y=mean_slug_dry_mass)) + geom_point() + geom_smooth(method=lm)
 
 
