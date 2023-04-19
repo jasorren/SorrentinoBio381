@@ -1,0 +1,61 @@
+---
+title: "Homework 12"
+author: "Jacob A. Sorrentino"
+date: "2023-04-19"
+output: html_document
+---
+
+#### Load dataframe and ggplot2
+```{R}
+df <- read.csv("combinedslugdata.csv")
+library(ggplot2)
+```
+
+#### Boxplot 1
+Showing how slug abundance varies based on sampling location.
+```{R}
+p1 <- ggplot(data=df) +
+  aes(x=Location,y=number_of_slugs) +
+  geom_boxplot() + 
+  labs(x="Sampling location",
+       y="Number of slugs per sample")
+p1 + theme_classic(base_size=12.5,base_family="Courier")
+```
+
+#### Scatterplot 1
+Showing how total slug biomass varies based on slug abundance.
+```{R}
+p2 <- ggplot(data=df) +
+  aes(x=number_of_slugs,
+      y=total_slug_dry_mass) +
+  geom_point(size=1) +
+  geom_smooth(method="lm",color="black") +
+  labs(x="Number of slugs per sample",
+       y="Total slug mass per sample (g)")
+p2 + theme_classic(base_size=12.5,base_family="Courier")
+```
+
+#### Scatterplot 2
+Showing how the biomass of a single slug varies based on slug abundance.
+```{R}
+p3 <- ggplot(data=df) +
+  aes(x=number_of_slugs,
+      y=mean_slug_dry_mass) +
+  geom_point(size=1) +
+  geom_smooth(method="lm",color="black") +
+  labs(x="Number of slugs per sample",
+       y="Mean slug mass per sample (g)")
+p3 + theme_classic(base_size=12.5,base_family="Courier")
+```
+
+#### Boxplot 2
+Showing how slug abundance varies based on the presence of spotted lanternfly.
+```{R}
+p4 <- ggplot(data=df) + 
+  aes(x=Type,
+      y=number_of_slugs) +
+  geom_boxplot() +
+  labs(x="Spotted lanternfly status",
+       y="Number of slugs per sample")
+p4 + theme_classic(base_size=12.5,base_family="Courier")
+```
